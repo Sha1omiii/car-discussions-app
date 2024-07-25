@@ -40,7 +40,7 @@ const authenticateUser = (req, res, next) => {
             }
         });
     } else {
-        return res.status(401).jsonn({ message: 'Access denies, token unavailable' });
+        return res.status(401).json({ message: 'Access denies, token unavailable' });
     }
 }
 
