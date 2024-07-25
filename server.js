@@ -3,7 +3,7 @@ const connectToDB = require('./database');
 const dotenv = require('dotenv').config();
 const express = require('express');
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT ? process.env.PORT : '8000'
 // so to protect unauthenticated users from getting access to admin rountes
 // I have to look at the token and depending on the user role, I redirect them based 
 // their role
