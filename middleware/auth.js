@@ -6,7 +6,7 @@ const dotenv = require('dotenv').config();
 const authenticateAdmin = (req, res, next) => {
     const token = req.cookies.jwt;
     if (token) {
-        jwt.verify(token, process.env.SECRET_STRING, (e, decodedToken) => {
+        jwt.verify(token, process.env.SECRET_TOKEN, (e, decodedToken) => {
             if (e) {
                 console.log('Token verification error: ', e);
                 return res.status(401).json({ message: 'Access denied' });
@@ -27,7 +27,7 @@ const authenticateAdmin = (req, res, next) => {
 const authenticateUser = (req, res, next) => {
     const token = req.cookies.jwt;
     if (token) {
-        jwt.verify(token, process.env.SECRET_STRING, (e, decodedToken) => {
+        jwt.verify(token, process.env.SECRET_TOKEN, (e, decodedToken) => {
             if (e) {
                 console.log('Token verify error: ', e);
                 return res.status(401).json({ message: 'Access denied' });

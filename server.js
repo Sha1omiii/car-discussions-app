@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use('/api/auth', require('./auth/route'));
 app.get('/admin', authenticateAdmin, (req, res) => 
 res.send('Admin\'s Route'));
-app.get('/client', authenticateUser, (req, res) => 
+app.get('/basic', authenticateUser, (req, res) => 
 res.send('User\'s Route'));
 
 app.set('view engine', 'ejs');
