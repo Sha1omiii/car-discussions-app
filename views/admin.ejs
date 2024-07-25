@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+</head>
+<body>
+    <div class="display" style="background-color: green;"></div>
+    <h1>Users</h1>
+    <ul></ul>
+    <button class="logout"><a href="/logout">Logout</a></button>
+    <script>
+        const ul = document.querySelector('ul');
+        const getUsers = async () => {
+            const response = await fetch('/api/auth/getUsers');
+            const returnedData = await response.json();
+            returnedData.user.map(mappedUser => {
+                if (mappedUser.username !== 'admin') {
+                    let li = `<li> <b>Username</b> => ${mappedUser.username} <br> <b>Role</b> => ${mappedUser.role} </li>`
+                    ul.innerHTML += li;
+                } else {
+                    return null;
+                }
+                const editRole = document.querySelectorAll('.edit');
+                const deleteUser = document.querySelector('.delete');
+            });
+            editRole.forEach((btn, i) => {
+                btn.addEventListener('click', async() => {
+                    display.textContent = '';
+                    const id = returnedData.user[i+1].id;
+                    const response = await fetch('/api/auth/update', {
+                        method: 'PUT', 
+                        body: JSON.stringify({ role: 'admin', id}),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const updateData = await response.json();
+                    if (response.status === 400 || response.status === 401) {
+                        document.body.scrollTop = 0;
+                        document.documentElement.scrollTop = 0;
+                        return display.textContent = `${updateData.message}. ${updateData.error ? updateData.error : ''}`
+                    }
+                    location.assign('/admin');
+                })
+            });
+            deleteUser.forEach((btn, i) => {
+                btn.addEventListener('click', async () => {
+                    display.textContent = '';
+                    const id = returnedData.user[i+1].id;
+                    const response = await fetch('/api/auth/deleteUser', {
+                        method: 'DELETE',
+                        body: JSON.stringify({ id }),
+                        headers: { 'Content-Type': 'application/json'}
+                    });
+                    const deleteData = await response.json();
+                    if (response.status === 401) {
+                        document.body.scrollTop = 0;
+                        document.documentElement.scrollTop = 0;
+                        return display.textContent = `${updateData.message}. ${updateData.error ? updateData.error : ''}`
+                    }
+                    location.assign('/admin');
+                })
+            })
+        } 
+        getUsers();
+    </script>
+</body>
+</html>

@@ -16,7 +16,7 @@ connectToDB();
 // we will take the user data from the body using express middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser);
+app.use(cookieParser());
 // now I need to import my router file as a middleware
 app.use('/api/auth', require('./auth/route'));
 app.get('/admin', authenticateAdmin, (req, res) => 
@@ -25,6 +25,31 @@ app.get('/client', authenticateUser, (req, res) =>
 res.send('User\'s Route'));
 
 app.set('view engine', 'ejs');
+
+app.get('/', (req, res) => {
+    res.render('landing');
+});
+
+app.get('/register', (req, res) => {
+    res.render('register-form');
+});
+
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+app.get('/admin', authenticateAdmin, (req, res) => {
+    res.render('admin');
+})
+
+app.get('/basic', authenticateUser, (req, res) => {
+    res.render('user');
+});
+
+app.get('/logout', (req, res) => {
+    res.cookie('jwt', '', { maxAge: '1' });
+    res.redirect('/');
+})
 
 app.listen(PORT, () => {
     console.log(`Listenting on ${PORT}`);

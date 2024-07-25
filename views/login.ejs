@@ -3,21 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Account</title>
+    <title>Login</title>
 </head>
 <body>
-    <h1>Register an Account</h1>
     <form>
-
         <label for="username">Username</label>
         <input type="text" id="username" required>
 
         <label for="password">Password</label>
         <input type="password" id="password" required>
-        
-        <input type="submit" value="Register">
+
+        <input type="submit" value="login">
     </form>
-    <a href="/login">Already have an account? Login</a>
+    <a href="/register">Sign up for a new account</a>
     <div class="error" style="color: red;"></div>
 
     <script>
@@ -30,21 +28,20 @@
             display.textContent = '';
 
             try {
-                const response = await fetch('/api/auth/register', {
+                const response = await fetch('/api/auth/login', {
                     method: 'POST', 
                     body: JSON.stringify({ username: username.value, password: password.value }), 
                     headers: { 'Content-Type': 'application/json' }
                 });
 
                 const returnedData = await response.json();
-
                 if (response.status === 400 || response.status === 401) {
                     return display.textContent = `${returnedData.message}. ${returnedData.error ? returnedData.error: ''}`
-                }returnedData.role === 'admin' ? location.assign('/admin') : location.assign('/basic');
+                }
+                returnedData.role === 'admin' ? location.assign('/admin') : location.assign('/basic');
             } 
             catch (e) {
                 console.log(e);
-                display.textContent = 'Error occured, try again later.';
             }
         })
     </script>

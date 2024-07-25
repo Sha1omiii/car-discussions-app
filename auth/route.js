@@ -5,7 +5,7 @@ const { authenticateAdmin } = require('../middleware/auth');
 
 router.route('/register').post(register);
 router.route('/login').post(login);
-router.route('/role').put(authenticateAdmin, userRole); // only an admin can change user roles and delete users
+router.route('/update').put(authenticateAdmin, userRole); // only an admin can change user roles and delete users
 router.route('/delete').delete(authenticateAdmin, deleteSpecificUser);
 
 module.exports = router;

@@ -141,4 +141,19 @@ const deleteSpecificUser = async (req, res) => {
     })
 }
 
-module.exports = { register, login, userRole, deleteSpecificUser }
+const allRegisteredUsers = async (req, res, next) => {
+    try {
+        const users =  await User.find({});
+        const userFn = users.map(user => {
+            return {
+                username: user.username,
+                role: user.role
+            }
+        });
+        res.status(200).json({ user: userFn });
+    } catch (e) {
+        res.status(401).json({ message: 'Not successful', error: e.message });
+    }
+}
+
+module.exports = { register, login, userRole, deleteSpecificUser, allRegisteredUsers }
