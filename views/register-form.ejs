@@ -38,9 +38,11 @@
 
                 const returnedData = await response.json();
 
-                if (response.status === 400 || response.status === 401) {
-                    return display.textContent = `${returnedData.message}. ${returnedData.error ? returnedData.error: ''}`
-                }returnedData.role === 'admin' ? location.assign('/admin') : location.assign('/basic');
+                if (response.ok) {
+                    location.assign('/login');
+                } else {
+                    display.textContent = `${returnedData.message}. ${returnedData.error ? returnedData.error : ''}`;
+                }
             } 
             catch (e) {
                 console.log(e);

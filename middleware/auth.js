@@ -32,11 +32,13 @@ const authenticateUser = (req, res, next) => {
                 console.log('Token verify error: ', e);
                 return res.status(401).json({ message: 'Access denied' });
             } else {
-                if (decodedToken.role !== 'Basic') {
-                    return res.status(401).json({ message: 'Access denied' });
-                } else {
-                    next();
-                }
+                req.user = decodedToken;
+                next();
+                // if (decodedToken.role !== 'Basic') {
+                //     return res.status(401).json({ message: 'Access denied' });
+                // } else {
+                //     next();
+                // }
             }
         });
     } else {

@@ -27,8 +27,9 @@ const register = async (req, res, next) => {
         // 2nd param - a secret key used to sign the token and is used to verify the tokens authenticity
         // 3rd param - options like expiresIn, which tells how long the token is valid for 
         const token = jwt.sign(
-            {id: user._id, username, role: user.role}, process.env.SECRET_STRING,
-            {expiresIn: maxAge}
+            { id: user._id, username, role: user.role }, 
+            process.env.SECRET_TOKEN,
+            { expiresIn: maxAge }
         );
 
         // sets a cookie on the client side
@@ -76,8 +77,8 @@ const login = async (req, res) => {
             if (passwordMatch) {
                 const maxAge = 60 * 60;
                 const token = jwt.sign(
-                    { id: user._id, username, role: user.role }, 
-                    process.env.SECRET_STRING,
+                    { id: user._id, username: user.username, role: user.role }, 
+                    process.env.SECRET_TOKEN,
                     { expiresIn: maxAge }
                 );
 
@@ -109,18 +110,19 @@ const userRole = async (req, res) => {
         if (role === 'admin') { // role.value = admin??
             try {
                 const user = await User.findById(id);
-                if (!user) res.json({ message: 'no user found.' })
+                if (!user) res.status(404).json({ message: 'no user found.' })
 
                 if (user.role !== 'admin') { // user is not an admin
                     user.role = role;
                     await user.save();
-                    res.status(201).json({
+                    res.status(200).json({
                         message: 'userrole updated successfully',
                     });
                 } else {
                     res.status(400).json({ message: 'The user is already an admin' })
                 }
-            } catch(e) {
+            } 
+            catch(e) {
                 res.status(400).json({ message: 'ERROR OCCURED', error: e.message })
             }
         } else {

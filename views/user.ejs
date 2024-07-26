@@ -6,22 +6,35 @@
     <title>User</title>
 </head>
 <body>
-    <h1>Users On DB</h1>
-    <ul></ul>
+    <h1>Welcome <%= user.username %></h1>
+    <ul id="list"></ul>
     <button class="logout"><a href="/logout">Logout</a></button>
     <script>
-        const ul = document.querySelector('ul');
+        const ul = document.querySelector('#list');
         const getUsers = async () => {
-            const response = await fetch('/api/auth/getUsers');
-            const returnedData = await response.json();
-            returnedData.user.map(mappedUser => {
-                if (mappedUser.username !== 'admin') {
-                    let li = `<li> <b>Username</b> => ${mappedUser.username} <br> <b>Role</b> => ${mappedUser.role} </li>`
-                    ul.innerHTML += li;
-                } else {
-                    return null;
+            try {
+                const response = await fetch('/api/auth/getUsers');
+                if (response.ok) {
+                    throw new Error('Network issues.');
                 }
-            })
+                const returnedData = await response.json();
+                
+                if (Array.isArray(returnedData.user)) {
+                    returnedData.user.forEach(mappedUser => {
+                        if (mappedUser.username !== 'admin') {
+                            const li = document.createElement('li');
+                            li.innerHTML = `<b>Username</b> => ${mappedUser.username} <br> <b>Role</b> => ${mappedUser.role}`;
+                            ul.appendChild(li);
+                        }
+                    });
+                } else {
+                    console.error('Not a valid data structure');
+                }
+            } 
+            catch (e) {
+                console.log(e);
+                ul.innerHTML = '<li>Error fetching all users. </li>';
+            }
         } 
         getUsers();
     </script>

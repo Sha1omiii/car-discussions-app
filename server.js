@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./model/user');
 const connectToDB = require('./database');
 const dotenv = require('dotenv').config();
 const express = require('express');
@@ -19,10 +20,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // now I need to import my router file as a middleware
 app.use('/api/auth', require('./auth/route'));
-app.get('/admin', authenticateAdmin, (req, res) => 
-res.send('Admin\'s Route'));
-app.get('/basic', authenticateUser, (req, res) => 
-res.send('User\'s Route'));
 
 app.set('view engine', 'ejs');
 
@@ -39,11 +36,14 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/admin', authenticateAdmin, (req, res) => {
+    res.send('Welcome to the Admins page');
     res.render('admin');
 })
 
 app.get('/basic', authenticateUser, (req, res) => {
-    res.render('user');
+    res.render('user', {
+        user: req.user,
+    });
 });
 
 app.get('/logout', (req, res) => {
