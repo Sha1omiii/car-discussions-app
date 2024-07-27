@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="server.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <h1 class="mb-4">Car Discussions/Blogs</h1>
+
+        <a href="/carblogs/new" class="btn btn-primary">Create</a>
+        <% discussions.forEach((discussion) => { %>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h4>
+                        <%= discussion.title %>
+                    </h4>
+                    <div class="card-subtitle text-muted mb-2">
+                        <% discussion.writtenAt = new Date() %>
+                        <%= discussion.writtenAt.toLocaleDateString(); %>
+                    </div>
+                    <div class="card-text mb-2">
+                        <%= discussion.make %>
+                    </div>
+                    <div class="card-text mb-2">
+                        <%= discussion.description %>
+                    </div>
+                    <a href="carblogs/<%= discussion.slug %>" class="btn btn-info" type="submit">See</a>
+                    
+                    <form action="/carblogs/<%= discussion._id %>?_method=DELETE" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                    
+                    <i onclick="toggleLikeDislike(this)" class="fa fa-thumbs-up"></i>
+                    <script>
+                        function toggleLikeDislike(e) {
+                            if(e.classList.contains('fa-thumbs-up')) {
+                                e.classList.remove('fa-thumbs-up');
+                                e.classList.add('fa-thumbs-down');
+                            } 
+                            else {
+                                e.classList.remove('fa-thumbs-down');
+                                e.classList.add('fa-thumbs-up');
+                            }
+                        }
+                    </script>
+                    
+                </div>
+            </div>     
+        <% }); %>
+    </div>
+</body>
+</html>
