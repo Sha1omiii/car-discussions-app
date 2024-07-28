@@ -7,8 +7,9 @@
 </head>
 <body>
     <h1>Welcome <%= user.username %></h1>
-    <ul id="list"></ul>
+    <h4>Your Role: <%= user.role %></h4>
     <button class="logout"><a href="/logout">Logout</a></button>
+    <!-- admin login - show all users
     <script>
         const ul = document.querySelector('#list');
         const getUsers = async () => {
@@ -37,6 +38,6 @@
             }
         } 
         getUsers();
-    </script>
+    </script> -->
 </body>
 </html>

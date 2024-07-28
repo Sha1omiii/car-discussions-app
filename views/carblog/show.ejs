@@ -14,7 +14,10 @@
     <p><%= post.description %></p>
 
     <a href="/" class="alert alert-success" role="alert">List All</a>
-    <a href="/carblogs/edit/<%= post.id %>" class="alert alert-info" role="alert">Edit Info</a> <br>
+    
+    <% if (user && post.owner && user._id.toString() === post.owner._id.toString()) { %>
+        <a href="/carblogs/edit/<%= post.id %>" class="alert alert-info" role="alert">Edit Info</a> <br>
+    <% } %>
     
     <h2 class="mb-2">Comments</h2>
     

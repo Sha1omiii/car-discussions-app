@@ -2,48 +2,57 @@
 // and grand access after verifying the token ( and also checking if token is available)
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
+const User = require('../model/user');
 
 const authenticateAdmin = (req, res, next) => {
     const token = req.cookies.jwt;
-    if (token) {
-        jwt.verify(token, process.env.SECRET_TOKEN, (e, decodedToken) => {
-            if (e) {
-                console.log('Token verification error: ', e);
-                return res.status(401).json({ message: 'Access denied' });
-            } else {
-                console.log('decodedToken: ', decodedToken);
-                if (decodedToken.role !== 'admin') {
-                    return res.status(401).json({ message: 'Access denied' });
-                } else {
-                    next();
-                }
-            }
-        });
-    } else {
-        return res.status(401).json({ message: 'Access denied, token unavailable.' });
+    if (!token) {
+        return res.redirect('/login');
     }
+
+    
+    jwt.verify(token, process.env.SECRET_TOKEN, (e, decodedToken) => {
+        if (e) {
+            console.log('Token verification error: ', e);
+            return res.redirect('/login');
+        } 
+        if ( decodedToken.role !== 'admin' ) {
+                console.log('decodedToken: ', decodedToken);
+                return res.status(403).json({ message: 'Access denied' });
+        }
+        req.user = decodedToken;
+        next();
+
+    });
 } 
 
 const authenticateUser = (req, res, next) => {
     const token = req.cookies.jwt;
     if (token) {
-        jwt.verify(token, process.env.SECRET_TOKEN, (e, decodedToken) => {
+        jwt.verify(token, process.env.SECRET_TOKEN, async (e, decodedToken) => {
             if (e) {
-                console.log('Token verify error: ', e);
-                return res.status(401).json({ message: 'Access denied' });
+                res.redirect('/login');
             } else {
-                req.user = decodedToken;
+                let user = await User.findById(decodedToken.id);
+                req.user = user;
                 next();
-                // if (decodedToken.role !== 'Basic') {
-                //     return res.status(401).json({ message: 'Access denied' });
-                // } else {
-                //     next();
-                // }
             }
         });
     } else {
-        return res.status(401).json({ message: 'Access denies, token unavailable' });
+        res.redirect('/login');
     }
+
+    // if (!token) {
+    //     return res.redirect('/login');
+    // }
+    // jwt.verify(token, process.env.SECRET_TOKEN, (e, decodedToken) => {
+    //     if (e) {
+    //         console.log('Token verify error: ', e);
+    //         return res.redirect('/login');
+    //     } 
+    //     req.user = decodedToken;
+    //     next();
+    // });
 }
 
 module.exports = { authenticateAdmin, authenticateUser }
