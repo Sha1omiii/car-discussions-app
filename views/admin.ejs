@@ -17,7 +17,7 @@
             try {
                 const response = await fetch('/api/auth/getUsers');
                 const returnedData = await response.json();
-                if (returnedData !== 200) {
+                if (!returnedData.ok) {
                     throw new Error(returnedData.message || 'Failed to fetch all users');
                 }
                 returnedData.user.forEach((mappedUser) => {
@@ -43,7 +43,7 @@
                         });
 
                         const updateData = await response.json();
-                        if (response.status === 400 || response.status === 401) {
+                        if (response.ok) {
                             display.textContent = `${updateData.message}. ${updateData.error ?updateData.error : ''}`
                         } else {
                             location.assign('/admin');
@@ -60,7 +60,7 @@
                         });
                         
                         const deleteData = await response.json();
-                        if (response.status === 401) {
+                        if (response.ok) {
                             display.textContent = `${deleteData.message}. ${deleteData.error ? deleteData.error : ''}`
                         } else {
                             location.assign('/admin');

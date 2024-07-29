@@ -3,15 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>New Discussion</title>
+
+    <style>
+        body {
+            padding: 20px;
+            background-color: #e4e6e9;
+            font-family: Arial, Helvetica;
+        }
+
+        header a {
+            color: #007bff;
+            text-decoration: none;
+            margin: 20px 20px;
+            text-align: center;
+            display: block;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ced4da;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .form-group input[type="file"] {
+            padding: 2px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .btn-secondary {
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+    </style>
+
 </head>
 <body>
     <header><a href="/logout">Logout</a></header>
-    <h1>New Car Discussion</h1>
-    <div>   
+    <div class="container">
+        <h1>New Car Discussion</h1>
         <form action="/carblogs" method="POST">
-            <%- include('form_partial.ejs') %>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input id="title" name="title" type="text" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="make">Car Model</label>
+                <input id="make" name="make"  type="text" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="img">Upload Images/Videos</label>
+                <input id="img" name="img" type="file" placeholder="NEEDS WORK" class="form-control">
+            </div>
+            <div class="button-group">
+                <a href="/basic" class="btn btn-secondary">Go Back</a>
+                <button type="submit" class="btn btn-primary">Add Discussion</button>
+            </div>
         </form>
     </div>
+    
 </body>
 </html>

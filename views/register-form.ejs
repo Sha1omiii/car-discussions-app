@@ -1,37 +1,150 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Account</title>
-    <link rel="stylesheet" href="./../css.styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,
+        *:before,
+        *:after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-image: url('https://images.unsplash.com/photo-1574913923087-1605248ae3b7?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+        }
+        header {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            font-size: 24px;
+            
+        }
+        .background {
+            width: 430px;
+            height: 520px;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+        }
+        .background .shape {
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            border-radius: 50%;
+        }
+        .shape:first-child {
+            background: linear-gradient(#ccd8ec, #2974a7);
+            left: -80px;
+            top: -80px;
+        }
+        .shape:last-child {
+            background: linear-gradient(to right, #ff512f, #f09819);
+            right: -30px;
+            bottom: -80px;
+        }
+        .container {
+            height: 520px;
+            width: 400px;
+            background-color: rgba(0, 0, 0, 0.67);
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(202, 154, 154, 0.3);
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+            padding: 50px 35px;
+        }
+        .container * {
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            outline: none;
+            border: none;
+        }
+        .container h1 {
+            font-size: 32px;
+            font-weight: 500;
+            line-height: 42px;
+            text-align: center;
+        }
+        .container label {
+            display: block;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .container input {
+            display: block;
+            height: 50px;
+            width: 100%;
+            background-color: rgba(226, 209, 209, 0.09);
+            border-radius: 3px;
+            padding: 0 10px;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 300;
+        }
+        ::placeholder {
+            color: #e5e5e5;
+        }
+        .container button {
+            margin: 20px 0px 10px 0px;
+            width: 100%;
+            background-color: #f09819;
+            color: #0e2b3f;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container a {
+            margin: 50px 100px;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <header><a href="/">Car Discussions</a></header>
-    <div class="container">
-        <div class="form-container">
-            <h1>Register an Account</h1>
-            <form>
-                <label for="username">Username</label>
-                <input type="text" id="username" required>
-
-                <label for="password">Password</label>
-                <input type="password" id="password" required>
-        
-                <input type="submit" value="Register">
-            </form>
-            <a href="/login">Already have an account? Login</a>
-        </div>
+    <header><h1>Car Discussion</h1></header>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
-    
+    <div class="container">
+        <h1>Register Acc</h1>
+        <form id="register-form">
+            <label for="username">Username</label>
+            <input type="text" id="username" required placeholder="Email">
 
-    
-    <!-- <div class="error" style="color: red;"></div> -->
+            <label for="password">Password</label>
+            <input type="password" id="password" required placeholder="Password">
+            
+            <label for="password">Confirm Password</label>
+            <input type="password" id="password" required placeholder="Confirm Password">
+            <button type="submit">Register</button>
+        </form>
+        <a href="/login">Login Instead?</a>
+        <div class="error"></div>
+    </div>
 
     <script>
-        const form = document.querySelector('form');
+        const form = document.querySelector('#register-form');
         const username = document.querySelector('#username');
-        const password = document.querySelector('#password')
+        const password = document.querySelector('#password');
         const display = document.querySelector('.error');
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -51,12 +164,11 @@
                 } else {
                     display.textContent = `${returnedData.message}. ${returnedData.error ? returnedData.error : ''}`;
                 }
-            } 
-            catch (e) {
+            } catch (e) {
                 console.log(e);
-                display.textContent = 'Error occured, try again later.';
+                display.textContent = 'Error occurred, try again later.';
             }
-        })
+        });
     </script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+// this file holds my routes for my main app
 const express = require('express');
 const router = express.Router();
 const Postmodel = require('../model/postmodel');
@@ -8,14 +9,18 @@ const path = require('path');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Path where files will be uploaded
+        cb(null, 'uploads/'); 
     },
+
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Filename format
+        cb(null, Date.now() + path.extname(file.originalname)); 
     }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ 
+    storage: storage,
+    limits: {fileSize: 10 * 1024 * 1024}    
+});
 
 
 router.get('/new', (req, res) => {
@@ -52,6 +57,7 @@ router.get('/:slug', async (req, res) => {
 });
 
 router.post('/', authenticateUser, upload.single('img'), async (req, res) => {
+    console.log(req.file);
     if (!req.user) {
         console.log('User not authenticated');
         return res.status(403).send('User not authenticated');
@@ -94,6 +100,30 @@ router.post('/:slug/comments', async (req, res) => {
     } catch (e) {
         console.log(e);
         res.status(500).json({ message: 'Error on the server side' });
+    }
+});
+
+router.put('/:id', authenticateUser, upload.single('img'), async (req, res) => {
+    try {
+        const post = await Postmodel.findById(req.params.id);
+        if (!post) {
+            return res.status(404).send('Post not found');
+        }
+
+        if (post.owner.toString() !== req.user._id.toString()) {
+            return res.status(403).send('You do not have permission to edit this post');
+        }
+        post.title = req.body.title;
+        post.make = req.body.make;
+        post.description = req.body.description;
+        if (req.file) {
+            post.img = `/uploads/${req.file.filename}`;
+        }
+
+        await post.save();
+        res.redirect(`/carblogs/${post.slug}`);
+    } catch (e) {
+        console.error(e);
     }
 });
 

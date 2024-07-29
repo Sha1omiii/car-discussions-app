@@ -4,9 +4,126 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="../../css/styles.css">
     <title>Car Discussion</title>
+
+    <style>
+        body {
+            padding: 20px;
+            background-color: #f8f9fa
+        }
+
+        header a {
+            color: #007bff;
+            background-color: #f8f9fa;
+            margin: 50%;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .post-container {
+            box-shadow: 0 5px 19px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 22px;
+        }
+
+        .post-container h1 {
+            font-size: 2rem;
+            margin-bottom: 13px;
+        }
+
+        .post-container h4 {
+            font-size: 1.3rem;
+            color: #261b57
+        }
+
+        .post-container p {
+            margin-bottom: 15px;
+        }
+
+        .post-container img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-group a {
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: #ededf3;
+        }
+
+        .alert-success {
+            background-color: #357fc5;
+        }
+
+        .alert-info {
+            background-color: #17a2b8;
+        }
+
+        .comment-container {
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            background-color: #fff;
+            padding: 20px;
+        }
+
+        .comment-container h2 {
+            font-size: 1.39rem;
+            margin-bottom: 15px;;
+        }
+
+        .comment-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .comment-container li {
+            margin-bottom: 6px;
+            padding: 8px;
+            background-color: #dee2e6;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ced4da;
+            border-radius: 10px;
+        }
+
+        button[type="submit"] {
+            padding: 9px 18px;
+            background-color: #357fc5;
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
 </head>
+
+
 <body>
     <header><a href="/logout">Logout</a></header>
     <div class="container">
@@ -14,6 +131,9 @@
             <h1><%= post.title %></h1>
             <h4><%= post.make %></h4>
             <p class="text-muted mb-2"><%= post.writtenAt.toLocaleDateString() %></p>
+            <%if (post.img) {%>
+                <img src="<%= post.img %>" alt="Image of a car">
+            <%}%>
             <p><%= post.description %></p>
             <div class="button-group">
                 <a href="/basic" class="alert alert-success" role="alert">List All</a>
@@ -22,6 +142,8 @@
                 <% } %>
             </div>
         </div>
+
+
         <div class="comment-container">
             <h2 class="mb-2">Comments</h2>
             <ul>

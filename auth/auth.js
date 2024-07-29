@@ -70,7 +70,7 @@ const login = async (req, res) => {
     }
 }
 
-
+//admin only
 const userRole = async (req, res) => {
     const { role, id } = req.body;
     if (role && id) {
@@ -99,7 +99,7 @@ const userRole = async (req, res) => {
         res.json({ message: 'Role or Id or both not present' });
     }
 }
-
+//admin only
 const deleteSpecificUser = async (req, res) => {
     const { id } = req.body;
     const user = await User.findByIdAndDelete(id);
@@ -107,7 +107,7 @@ const deleteSpecificUser = async (req, res) => {
         user
     })
 }
-
+//admin only
 const allRegisteredUsers = async (req, res, next) => {
     try {
         const users =  await User.find({});

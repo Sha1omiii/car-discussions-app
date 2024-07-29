@@ -1,6 +1,5 @@
 // this auth job is only to look at the token (it requests the token) 
 // and grand access after verifying the token ( and also checking if token is available)
-const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 const User = require('../model/user');
 
