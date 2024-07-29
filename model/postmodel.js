@@ -15,7 +15,10 @@ const carBlogSchema = new mongoose.Schema({
     make: String,
     writtenAt: Date,
     description: String,
-    img: String,
+    img: {
+        type: String,
+        required: false
+    },
     slug: {
         type: String, 
         unique: true,

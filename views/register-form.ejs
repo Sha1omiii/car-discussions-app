@@ -4,21 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Account</title>
+    <link rel="stylesheet" href="./../css.styles.css">
 </head>
 <body>
-    <h1>Register an Account</h1>
-    <form>
+    <header><a href="/">Car Discussions</a></header>
+    <div class="container">
+        <div class="form-container">
+            <h1>Register an Account</h1>
+            <form>
+                <label for="username">Username</label>
+                <input type="text" id="username" required>
 
-        <label for="username">Username</label>
-        <input type="text" id="username" required>
-
-        <label for="password">Password</label>
-        <input type="password" id="password" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
         
-        <input type="submit" value="Register">
-    </form>
-    <a href="/login">Already have an account? Login</a>
-    <div class="error" style="color: red;"></div>
+                <input type="submit" value="Register">
+            </form>
+            <a href="/login">Already have an account? Login</a>
+        </div>
+    </div>
+    
+
+    
+    <!-- <div class="error" style="color: red;"></div> -->
 
     <script>
         const form = document.querySelector('form');

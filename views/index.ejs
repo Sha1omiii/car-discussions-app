@@ -6,61 +6,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="server.js"></script>
+    <link rel="stylesheet" href="./../css/styles.css">
     <title>Document</title>
 </head>
 <body>
+    <header><a href="/logout">Logout</a></header>
     <div id="container">
-        <h1 class="mb-4">Car Discussions/Blogs</h1>
-
-        <div class="user-info mb-4">
-            <h1>Welcome <%= user.username %></h1>
-            <h4>Your Role: <%= user.role %></h4>
-            <button class="logout"><a href="/logout">Logout</a></button>
+        <h1>Recent Discussions</h1>
+        <div class="welome-container">
+            <h1>Welcome <%= user.username %> ( <%= user.role %> )</h1>
         </div>
 
         <a href="/carblogs/new" class="btn btn-primary">Create</a>
         <% discussions.forEach((discussion) => { %>
-            <div class="card mt-4">
+            <div class="card">
                 <div class="card-body">
-                    <h4>
+                    <h4 class="card-title">
                         <%= discussion.title %> 
-                        <strong>Post owner:</strong> <%= discussion.owner ? discussion.owner.username : 'Unknown' %>
                     </h4>
-                    <div class="card-subtitle text-muted mb-2">
+                    <h6 class="card-subtitle">
+                        Post owner: <%= discussion.owner ? discussion.owner.username : 'Unknown' %> <br>
+                    </h6>
+                    <p class="card-text">
+                        <strong>Written at: </strong> 
                         <% discussion.writtenAt = new Date() %>
                         <%= discussion.writtenAt.toLocaleDateString(); %>
-                    </div>
-                    <div class="card-text mb-2">
-                        <%= discussion.make %>
-                    </div>
-                    <div class="card-text mb-2">
+                        <strong>Make: </strong> <%= discussion.make %> <br>
                         <%= discussion.description %>
-                    </div>
-                    <a href="carblogs/<%= discussion.slug %>" class="btn btn-info" type="submit">See</a>
-                    
-                    <% if (user && discussion.owner && user._id.toString() === discussion.owner._id.toString()) { %>
-                        <form action="/carblogs/<%= discussion._id %>?_method=DELETE" method="POST" class="d-inline">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    <%} %>
-                    
-                    
-                    <i onclick="toggleLikeDislike(this)" class="fa fa-thumbs-up"></i>
-                    <script>
-                        function toggleLikeDislike(e) {
-                            if(e.classList.contains('fa-thumbs-up')) {
-                                e.classList.remove('fa-thumbs-up');
-                                e.classList.add('fa-thumbs-down');
-                            } 
-                            else {
-                                e.classList.remove('fa-thumbs-down');
-                                e.classList.add('fa-thumbs-up');
-                            }
-                        } //
-                    </script>
+                    </p>
+
+                    <%if (discussion.img) {%>
+                        <img src="<%= discussion.img %>" alt="Image of a car">
+                    <%}%>
+                </div>
+
+                
+                <i onclick="toggleLikeDislike(this)" class="fa fa-thumbs-up"></i>
+                <% if (user && discussion.owner && user._id === discussion.owner._id.toString() && user._id.toString() === discussion.owner._id.toString()) { %>
+                    <form action="/carblogs/<%= discussion._id %>?_method=DELETE" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                <%} %>
+                
+                <a href="carblogs/<%= discussion.slug %>" class="btn btn-info" type="submit">See</a>
+
                 </div>
             </div>     
         <% }); %>
     </div>
+    <script>
+        function toggleLikeDislike(e) {
+            if(e.classList.contains('fa-thumbs-up')) {
+                e.classList.remove('fa-thumbs-up');
+                e.classList.add('fa-thumbs-down');
+            } 
+            else {
+                e.classList.remove('fa-thumbs-down');
+                e.classList.add('fa-thumbs-up');
+            }
+        } 
+    </script>
 </body>
 </html>

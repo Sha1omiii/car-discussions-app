@@ -6,21 +6,27 @@
     <title>Login</title>
 </head>
 <body>
-    <h1>Login</h1>
-    <form>
-        <label for="username">Username</label>
-        <input type="text" id="username" required>
+    <header><a href="/">Car Discussions</a></header>
+    <div class="container">
+        <div class="form-container">
+            <h1>Login</h1>
+            <form id="login-form">
+                <label for="username">Username</label>
+                <input type="text" id="username" required>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
 
-        <input type="submit" value="login">
-    </form>
+                <input type="submit" value="login">
+            </form>
+        </div>
+    </div>
+    
     <a href="/register">Sign up for a new account</a>
     <div class="error" style="color: red;"></div>
 
     <script>
-        const form = document.querySelector('form');
+        const form = document.querySelector('#login-form');
         const username = document.querySelector('#username');
         const password = document.querySelector('#password')
         const display = document.querySelector('.error');
@@ -29,6 +35,7 @@
             display.textContent = '';
 
             try {
+                console.log('currently submitting login form');
                 const response = await fetch('/api/auth/login', {
                     method: 'POST', 
                     body: JSON.stringify({ username: username.value, password: password.value }), 
@@ -36,15 +43,20 @@
                 });
 
                 const returnedData = await response.json();
-                if (response.status === 400 || response.status === 401) {
-                    return display.textContent = `${returnedData.message}. ${returnedData.error ? returnedData.error: ''}`
-                }
-                returnedData.role === 'admin' ? location.assign('/admin') : location.assign('/basic');
-            } 
+                console.log('Response: ', returnedData);
+                if (response.ok) {
+                    if (returnedData.role === 'admin') {
+                        location.assign('/admin');
+                    } else {
+                        location.assign('/basic')
+                    }
+                } else {
+                    display.textContent = `${returnedData.message}. ${returnedData.error ? returnedData.error : ''}`;
+                }            } 
             catch (e) {
                 console.log(e);
             }
-        })
+        });
     </script>
 </body>
 </html>

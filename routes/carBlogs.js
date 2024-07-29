@@ -2,6 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Postmodel = require('../model/postmodel');
 const { authenticateUser } = require('../middleware/auth');
+const multer = require('multer');
+const path = require('path');
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Path where files will be uploaded
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname)); // Filename format
+    }
+});
+
+const upload = multer({ storage: storage });
 
 
 router.get('/new', (req, res) => {
@@ -34,30 +48,34 @@ router.get('/:slug', async (req, res) => {
     } catch (e) {
         console.log(e);
         res.json({ messgae: 'Server-side Error' });
-    }
-    
-    
-})
+    }  
+});
 
-router.post('/', async (req, res) => {
-    let reqCarBlog = new Postmodel ({
+router.post('/', authenticateUser, upload.single('img'), async (req, res) => {
+    if (!req.user) {
+        console.log('User not authenticated');
+        return res.status(403).send('User not authenticated');
+    }
+
+    let reqCarBlog = new Postmodel({
         title: req.body.title,
         make: req.body.make,
-        writtenAt: new Date,
-        img: req.body.img,
+        writtenAt: new Date(),
+        img: req.file ? `/uploads/${req.file.filename}` : undefined, // Ensure this is set correctly
         description: req.body.description,
         owner: req.user._id,
     });
 
+
+    //
     try {
         reqCarBlog = await reqCarBlog.save();
-        res.redirect(`/carblogs/${ reqCarBlog.slug }`);
+        res.redirect(`/carblogs/${reqCarBlog.slug}`);
     } catch (e) {
         console.log(e);
-        res.render('carblog/new.ejs');
+        res.render('carblog/new.ejs', { error: 'Failed to save post' });
     }
 });
-
 
 router.post('/:slug/comments', async (req, res) => {
     try {
@@ -81,13 +99,13 @@ router.post('/:slug/comments', async (req, res) => {
 
 router.delete('/:id', authenticateUser, async (req, res) => {
     try {
-        const post = await Postmodel.findByIdAndDelete(req.params.id);
+        const post = await Postmodel.findById(req.params.id);
         if(!post) {
-            return res.send('No Post Found.');
+            return res.status(404).send('No Post Found.');
         }
 
-        if(post.owner.toString() !== req.user._id.toString()) {
-            res.send('You dont have the permission to delete this post.')
+        if (post.owner.toString() !== req.user._id.toString()) {
+            res.status(403).send('You dont have the permission to delete this post.')
         }
 
         await post.deleteOne();
