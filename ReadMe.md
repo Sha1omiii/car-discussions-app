@@ -6,7 +6,9 @@ I chose to create a car-related app because I spend the most of my time online r
 
 ## Some Features Included in the App
 - Authenticating users using session based authentication
+![Login-page](./markdown%20images//login.png)
 - Users can manage their posts
+![Crud Operations](./markdown%20images//crud.png)
 > Create, edit, view, and delete car discussions or blogs I should say.
 - A comment section and like feature for using to interact with other users posts
 - Different permissions allowed based on user roles 
@@ -24,10 +26,16 @@ I chose to create a car-related app because I spend the most of my time online r
 - method-override
 - and express.js
 
+## Explore App
+[Car-discussion-app](https://hidden-tor-48839-217759ed6eab.herokuapp.com/login) <br>
+[Github-repo](https://github.com/Sha1omiii/car-discussions-app.git)
+
 ## Planned Future Enhancements
 - Implement Admin functionality (almost done)
 - Add more styling to make it interactive  
 
 ### Reference and Credits
 [Modzilla Express](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose) <br>
-Layout Inspo - credit bimmerforms 
+Layout Inspo - credit bimmerforms <br>
+[CSS-flexbox-used-methods](https://getflywheel.com/layout/flexbox-create-modern-card-design-layout/)
+Thank to [freefrontend](https://freefrontend.com) styling for login inspiration
